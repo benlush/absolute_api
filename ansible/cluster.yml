@@ -1,0 +1,4 @@
+- hosts: minikube_cluster
+  become: yes
+  roles:
+    - { role: minikube/install, tags: ['middleware'] }

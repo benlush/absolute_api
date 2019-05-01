@@ -1,0 +1,4 @@
+# create namespace
+# create deployment (scale = 1)
+# create service to expose the container (NodePort)
+# run kubectl --configfile=conf.yml apply -f kubernetes/manifest.yaml

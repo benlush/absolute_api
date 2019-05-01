@@ -1,0 +1,10 @@
+# https://kubernetes.io/docs/setup/minikube/#installation
+- name: download middleware
+  get_url:
+    url: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
+    dest: "{{ minikube_exe }}"
+
+- name: make file exe
+  file:
+    path: "{{ minikube_exe }}"
+    mode: "0755"
