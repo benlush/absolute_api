@@ -1,1 +1,39 @@
-// jenkins pipeline
+#!/usr/bin/env groovy
+
+def label = "${UUID.randomUUID().toString()}"
+def repository = "absolute_java_project_github_repository"
+
+podTemplate(label: label,
+    containers: [
+        containerTemplate(name: "jnlp", image: "jenkins/jnlp-slave"),
+        containerTemplate(name: "maven", image: "abs/maven"),
+        containerTemplate(name: "maven", image: "abs/java"),
+        containerTemplate(name: "maven", image: "abs/ansible"),
+        containerTemplate(name: "maven", image: "abs/kubectl"),
+    ]) {
+    node(label) {
+        stage("checkout java project | git") {
+            git url: repository
+        }
+        stage("build java project | maven") {
+            container(name: "maven") {
+            }
+        }
+        stage("build java app using jarfile | java") {
+            container(name: "java") {
+            }
+        }
+        stage("setup local cluster | ansible") {
+            container(name: "ansible") {
+                sh: "ansible-playbook cluster.yml"
+            }
+        }
+        stage("deploy java app to cluster | kubectl") {
+            container(name: "kubectl") {
+                sh: "kubectl apply -f kubernetes/"
+            }
+        }
+        stage("promote k8s deployment | kubectl") {
+        }
+    }
+}
