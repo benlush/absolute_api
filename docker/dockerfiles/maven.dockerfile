@@ -1,2 +1,8 @@
-# build the Java project
-# This should already be included in the git repo but we'll have it just incase
+FROM maven:3.6-jdk-alpine
+
+WORKDIR /usr/src/app
+
+COPY pom.xml ./
+COPY src ./src/
+
+RUN mvn install
